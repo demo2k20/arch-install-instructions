@@ -1,0 +1,67 @@
+loadkeys hu
+(wifi-menu; if needed)
+ping google.com
+timedatectl set-ntp true
+timedatectl status
+cfdisk (UEFI: GPT; Legacy: DOS; 512MB Efi System (UEFI ONLY); 150% of ramGB for swap, restGB Linux Filesystem)
+mkfs.vfat /dev/sda1 (Only for UEFI)
+mkswap /dev/sda2
+swapon /dev/sda2
+mkfs.ext4 /dev/sda3
+mount /dev/sda3 /mnt
+mkdir /mnt/boot (Only for UEFI)
+mount /dev/sda1 /mnt/boot (Only for UEFI)
+pacman -Syyy
+pacman -S reflector
+reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
+pacstrap /mnt base base-devel linux linux-firmware vim man-db man-pages inetutils netctl networkmanager s-nail intel-ucode
+genfstab -U /mnt >> /mnt/etc/fstab
+arch-chroot /mnt
+ln -sf /usr/share/zoneinfo/Europe/Bucharest /etc/localtime
+hwclock --systohc
+vim /etc/locale.gen (uncomment en_US.UTF-8 UTF-8)
+locale-gen
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+echo "KEYMAP=hu" > /etc/vconsole.conf
+echo "*myhostname*" > /etc/hostname
+vim /etc/hosts
+127.0.0.1	localhost
+::1		localhost
+127.0.1.1	*myhostname*.localdomain	*myhostname*
+
+systemctl enable NetworkManager
+
+# installing the bootloader (Legacy)!!!!!!!!!!!!
+pacman -S grub
+grub-install /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+
+# installing the bootloader (UEFI)!!!!!!!!!!!!!!
+pacman -S grub efibootmgr
+mkdir /boot/efi
+mount /dev/sda1 /boot/efi
+grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
+grub-mkconfig -o /boot/grub/grub.cfg
+mkdir /boot/efi/EFI/BOOT
+cp /boot/efi/EFI/GRUB/grubx64.efi /boot/efi/EFI/BOOT/BOOTX64.EFI
+vim /boot/efi/startup.nsh (Write: bcf boot add 1 fs0:\EFI\GRUB\grubx64.efi "GRUB" *NEWLINE* exit)
+
+passwd (to setup root password)
+useradd -m username
+passwd username
+usermod -aG wheel,audio,video,optical,storage username
+visudo (uncomment %wheel) :wq
+exit
+shutdown now ; or reboot
+
+sudo pacman -S pulseaudio pulseaudio-alsa xorg xorg-xinit xorg-server noto-fonts i3 rxvt-unicode
+echo "exec i3" > ~/.xinitrc
+startx
+
+localectl set-x11-keymap hu
+setxkbmap -model abnt2 -layout hu
+
+sudo pacman -S xdg-user-dirs gvfs
+xdg-user-dirs-update
+
+github.com/rolandnemes/dotfiles

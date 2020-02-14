@@ -1,0 +1,16 @@
+# one command to rule them all
+
+pacstrap /mnt zathura zathura-pdf-poppler firefox pcmanfm nitrogen vim rxvt-unicode rofi i3blocks compton lxappearance arandr neofetch htop file-roller sysstat acpi alsa-utils gvfs pulseaudio pulseaudio-alsa xorg xorg-xinit xorg-server noto-fonts i3 base base-devel linux linux-firmware man-db man-pages inetutils netctl networkmanager network-manager-applet s-nail intel-ucode git vlc qbittorrent xdg-user-dirs ttf-hack
+
+#python-pip
+
+xdg-user-dirs-update
+
+# AUR helper
+cd /tmp
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+
+# for polybar
+#pip install i3ipc

@@ -1,0 +1,1 @@
+I've made these notes as a reference for myself when installing Arch Linux.
