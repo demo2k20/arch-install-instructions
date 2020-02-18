@@ -3,14 +3,14 @@ loadkeys hu
 ping google.com
 timedatectl set-ntp true
 timedatectl status
-cfdisk (UEFI: GPT; Legacy: DOS; 512MB Efi System (UEFI ONLY); 150% of ramGB for swap, restGB Linux Filesystem)
-mkfs.vfat /dev/sda1 (Only for UEFI)
+cfdisk (UEFI: GPT; Legacy: DOS; 512MB Efi System (UEFI ONLY, NO DUAL BOOT); 150% of ramGB for swap, restGB Linux Filesystem)
+mkfs.vfat /dev/sda1 (Only for UEFI, NO DUAL BOOT)
 mkswap /dev/sda2
 swapon /dev/sda2
 mkfs.ext4 /dev/sda3
 mount /dev/sda3 /mnt
 mkdir /mnt/boot (Only for UEFI)
-mount /dev/sda1 /mnt/boot (Only for UEFI)
+mount /dev/sda1 /mnt/boot (Only for UEFI) (mount the efi partition)
 pacman -Syyy
 pacman -S reflector
 reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
@@ -48,11 +48,9 @@ vim /boot/efi/startup.nsh (Write: bcf boot add 1 fs0:\EFI\GRUB\grubx64.efi "GRUB
 
 # dual boot win10 (work in progress)
 pacman -S grub efibootmgr os-prober
-mkdir /boot/efi
-mount /dev/sda5 /boot/efi
-grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
-mkdir /mnt2
-mount /dev/sda2 /mnt2 (windows efi partition, usually around 99mb)
+grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot
+mkdir /mnt/win10
+mount /dev/sda2 /mnt/win10 (mount the win10 partition)
 grub-mkconfig -o /boot/grub/grub.cfg (should mention windows boot manager)
 
 passwd (to setup root password)
