@@ -46,22 +46,28 @@ mkdir /boot/efi/EFI/BOOT
 cp /boot/efi/EFI/GRUB/grubx64.efi /boot/efi/EFI/BOOT/BOOTX64.EFI
 vim /boot/efi/startup.nsh (Write: bcf boot add 1 fs0:\EFI\GRUB\grubx64.efi "GRUB" *NEWLINE* exit)
 
+# dual boot win10 (work in progress)
+pacman -S grub efibootmgr os-prober
+mkdir /boot/efi
+mount /dev/sda5 /boot/efi
+grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
+mkdir /mnt2
+mount /dev/sda2 /mnt2 (windows efi partition, usually around 99mb)
+grub-mkconfig -o /boot/grub/grub.cfg (should mention windows boot manager)
+
 passwd (to setup root password)
 useradd -m username
 passwd username
-usermod -aG wheel,audio,video,optical,storage username
+usermod -aG wheel,audio,video,optical,storage,power username
 visudo (uncomment %wheel) :wq
 exit
 shutdown now ; or reboot
 
-sudo pacman -S pulseaudio pulseaudio-alsa xorg xorg-xinit xorg-server noto-fonts i3 rxvt-unicode
+sudo pacman -S pulseaudio pulseaudio-alsa xorg xorg-xinit noto-fonts i3 rxvt-unicode xdg-user-dirs gvfs
 echo "exec i3" > ~/.xinitrc
-startx
-
 localectl set-x11-keymap hu
 setxkbmap -model abnt2 -layout hu
-
-sudo pacman -S xdg-user-dirs gvfs
 xdg-user-dirs-update
+startx
 
 github.com/rolandnemes/dotfiles
