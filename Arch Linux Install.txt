@@ -61,7 +61,7 @@ visudo (uncomment %wheel) :wq
 exit
 shutdown now ; or reboot
 
-sudo pacman -S pulseaudio pulseaudio-alsa xorg xorg-xinit noto-fonts i3 rxvt-unicode xdg-user-dirs gvfs
+sudo pacman -S pulseaudio pulseaudio-alsa xorg xorg-xinit noto-fonts i3 termite xdg-user-dirs gvfs
 echo "exec i3" > ~/.xinitrc
 localectl set-x11-keymap hu
 setxkbmap -model abnt2 -layout hu
