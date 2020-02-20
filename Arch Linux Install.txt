@@ -48,9 +48,9 @@ vim /boot/efi/startup.nsh (Write: bcf boot add 1 fs0:\EFI\GRUB\grubx64.efi "GRUB
 
 # dual boot win10 (work in progress)
 pacman -S grub efibootmgr os-prober
-grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot
-mkdir /mnt/win10
-mount /dev/sda2 /mnt/win10 (mount the win10 partition)
+grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/
+mkdir /mnt2
+mount /dev/sda2 /mnt2
 grub-mkconfig -o /boot/grub/grub.cfg (should mention windows boot manager)
 
 passwd (to setup root password)
@@ -63,9 +63,10 @@ shutdown now ; or reboot
 
 sudo pacman -S pulseaudio pulseaudio-alsa xorg xorg-xinit noto-fonts i3 termite xdg-user-dirs gvfs
 echo "exec i3" > ~/.xinitrc
+startx
+
 localectl set-x11-keymap hu
 setxkbmap -model abnt2 -layout hu
 xdg-user-dirs-update
-startx
 
 github.com/rolandnemes/dotfiles
