@@ -11,8 +11,7 @@ mkfs.ext4 /dev/sda3
 mount /dev/sda3 /mnt
 mkdir /mnt/boot (Only for UEFI)
 mount /dev/sda1 /mnt/boot (Only for UEFI) (mount the efi partition)
-pacman -Syyy
-pacman -S reflector
+pacman -Syyy reflector
 reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
 pacstrap /mnt base base-devel linux linux-firmware vim man-db man-pages inetutils netctl networkmanager s-nail intel-ucode
 genfstab -U /mnt >> /mnt/etc/fstab
