@@ -3,8 +3,8 @@ loadkeys hu
 ping google.com
 timedatectl set-ntp true
 timedatectl status
-cfdisk (UEFI: GPT; Legacy: DOS; 512MB Efi System (UEFI ONLY, NO DUAL BOOT); 150% of ramGB for swap, restGB Linux Filesystem)
-mkfs.vfat /dev/sda1 (Only for UEFI, NO DUAL BOOT)
+cfdisk (UEFI: GPT; Legacy: DOS; 512MB Efi System (UEFI ONLY); 150% of ramGB for swap, restGB Linux Filesystem)
+mkfs.vfat /dev/sda1 (Only for UEFI)
 mkswap /dev/sda2
 swapon /dev/sda2
 mkfs.ext4 /dev/sda3
