@@ -13,7 +13,7 @@ mkdir /mnt/boot (Only for UEFI)
 mount /dev/sda1 /mnt/boot (Only for UEFI) (mount the efi partition)
 pacman -Syyy reflector
 reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
-pacstrap /mnt base base-devel linux linux-firmware vim man-db man-pages inetutils netctl networkmanager s-nail intel-ucode
+pacstrap /mnt base base-devel linux linux-firmware vi vim networkmanager man-db man-pages texinfo inetutils netctl s-nail e2fsprogs dosfstools intel-ucode
 genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
 ln -sf /usr/share/zoneinfo/Europe/Bucharest /etc/localtime
@@ -60,12 +60,11 @@ visudo (uncomment %wheel) :wq
 exit
 shutdown now ; or reboot
 
-sudo pacman -S pulseaudio pulseaudio-alsa xorg xorg-xinit noto-fonts i3 termite xdg-user-dirs gvfs
+sudo pacman -S pulseaudio pulseaudio-alsa xorg xorg-xinit noto-fonts i3 termite gvfs
 echo "exec i3" > ~/.xinitrc
 startx
 
-localectl set-x11-keymap hu
 setxkbmap -model abnt2 -layout hu
-xdg-user-dirs-update
+localectl set-x11-keymap hu
 
 github.com/rolandnemes/dotfiles
