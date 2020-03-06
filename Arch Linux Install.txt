@@ -52,8 +52,23 @@ mkdir /boot/efi/EFI/BOOT
 cp /boot/efi/EFI/GRUB/grubx64.efi /boot/efi/EFI/BOOT/BOOTX64.EFI
 vim /boot/efi/startup.nsh (Write: bcf boot add 1 fs0:\EFI\GRUB\grubx64.efi "GRUB" *NEWLINE* exit)
 
-# installing the bootloader systemd (UEFI)!!!!!!!!!!!
+# installing the bootloader systemd boot (UEFI)!!!!!!!!!!!
+bootctl --path=/boot install
 
+vim /boot/loader/loader.conf
+default arch-*
+#timeout 5
+
+e2label /dev/sda3 "arch_os"
+
+vim /boot/loader/entries/arch.conf
+title   Arch Linux
+linux   /vmlinuz-linux
+initrd    /intel-ucode.img
+initrd    /initramfs-linux.img
+options   root=LABEL=arch_os rw
+
+Alternatively, use UUID; in vim: options  root=UUID=*r! blkid of /dev/sda3* rw
 
 # dual boot win10 (work in progress)
 pacman -S grub efibootmgr os-prober
@@ -69,5 +84,7 @@ echo "exec i3" > ~/.xinitrc
 startx
 
 setxkbmap -model abnt2 -layout hu
+localectl set-x11-keymap hu
+localectl status
 
 github.com/rolandnemes/dotfiles
