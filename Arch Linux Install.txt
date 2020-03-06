@@ -13,7 +13,7 @@ mkdir /mnt/boot (Only for UEFI)
 mount /dev/sda1 /mnt/boot (Only for UEFI) (mount the efi partition)
 pacman -Syyy reflector
 reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
-pacstrap /mnt base base-devel linux linux-firmware vi vim networkmanager man-db man-pages texinfo inetutils netctl s-nail e2fsprogs dosfstools intel-ucode
+pacstrap /mnt base base-devel linux linux-firmware vi vim networkmanager man-db man-pages gvfs inetutils netctl e2fsprogs dosfstools intel-ucode
 genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
 ln -sf /usr/share/zoneinfo/Europe/Bucharest /etc/localtime
@@ -29,6 +29,13 @@ vim /etc/hosts
 127.0.1.1	*myhostname*.localdomain	*myhostname*
 
 systemctl enable NetworkManager
+
+passwd (to setup root password)
+useradd -m username
+passwd username
+usermod -aG wheel,audio,video,optical,storage,power username
+visudo (uncomment %wheel) :wq
+exit
 
 # installing the bootloader (Legacy)!!!!!!!!!!!!
 pacman -S grub
@@ -52,15 +59,9 @@ mkdir /mnt2
 mount /dev/sda2 /mnt2
 grub-mkconfig -o /boot/grub/grub.cfg (should mention windows boot manager)
 
-passwd (to setup root password)
-useradd -m username
-passwd username
-usermod -aG wheel,audio,video,optical,storage,power username
-visudo (uncomment %wheel) :wq
-exit
 shutdown now ; or reboot
 
-sudo pacman -S pulseaudio pulseaudio-alsa xorg xorg-xinit noto-fonts i3 termite gvfs
+sudo pacman -S pulseaudio pulseaudio-alsa xorg xorg-xinit noto-fonts i3 termite
 echo "exec i3" > ~/.xinitrc
 startx
 
