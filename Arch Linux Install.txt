@@ -79,7 +79,7 @@ grub-mkconfig -o /boot/grub/grub.cfg (should mention windows boot manager)
 
 shutdown now ; or reboot
 
-sudo pacman -S pulseaudio pulseaudio-alsa xorg xorg-xinit noto-fonts i3 termite *gpudriver*
+sudo pacman -S pulseaudio pulseaudio-alsa pavucontrol xorg xorg-xinit noto-fonts i3 termite *gpudriver*
 echo "exec i3" > ~/.xinitrc
 startx
 
