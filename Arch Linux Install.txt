@@ -31,9 +31,8 @@ vim /etc/hosts
 systemctl enable NetworkManager
 
 passwd (to setup root password)
-useradd -m username
-passwd username
-usermod -aG wheel,audio,video,optical,storage,power username
+useradd -mG wheel,users,audio,video,optical,storage,power *username*
+passwd *username*
 visudo (uncomment %wheel) :wq
 exit
 
