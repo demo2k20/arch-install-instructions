@@ -34,7 +34,6 @@ passwd (to setup root password)
 useradd -mG wheel,users,audio,video,optical,storage,power *username*
 passwd *username*
 visudo (uncomment %wheel) :wq
-exit
 
 # installing the bootloader (Legacy)!!!!!!!!!!!!
 pacman -S grub
@@ -76,6 +75,7 @@ mkdir /mnt2
 mount /dev/sda2 /mnt2
 grub-mkconfig -o /boot/grub/grub.cfg (should mention windows boot manager)
 
+exit
 shutdown now ; or reboot
 
 sudo pacman -S pulseaudio pulseaudio-alsa pavucontrol xorg xorg-xinit noto-fonts i3 termite *gpudriver*
