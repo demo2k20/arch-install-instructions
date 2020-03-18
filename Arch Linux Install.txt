@@ -68,12 +68,6 @@ options   root=LABEL=arch_os rw (nvidia proprietary driver screen tearing fix: "
 
 Alternatively, use UUID; in vim: options  root=UUID=*r! blkid of /dev/sda3* rw
 
-# dual boot win10 (work in progress)
-pacman -S grub efibootmgr os-prober
-grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/
-mkdir /mnt2
-mount /dev/sda2 /mnt2
-grub-mkconfig -o /boot/grub/grub.cfg (should mention windows boot manager)
 
 exit
 shutdown now ; or reboot
