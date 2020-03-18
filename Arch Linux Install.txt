@@ -111,7 +111,13 @@ alacritty
 firefox
 
 # Useful programs
-nm-applet trash-cli acpilight
+nm-applet trash-cli acpilight htop pulsemixer 
+
+# Showoff programs
+vis lolcat sl neofetch
+
+# Regular programs
+qbittorrent ranger zathura zathura-pdf-poppler feh rofi i3lock compton lxappearance arandr file-roller 
 
 echo "exec bspwm" > ~/.xinitrc
 startx
