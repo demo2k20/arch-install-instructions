@@ -91,6 +91,23 @@ xf86-video-nouveau
 #
 # Proprietary NVIDIA
 nvidia lib32-nvidia-utils (for steam)
+sudo vim /etc/X11/xorg.conf.d/10-nvidia-drm-outputclass.conf
+
+Section "OutputClass"
+    Identifier "intel"
+    MatchDriver "i915"
+    Driver "modesetting"
+EndSection
+
+Section "OutputClass"
+    Identifier "nvidia"
+    MatchDriver "nvidia-drm"
+    Driver "nvidia"
+    Option "AllowEmptyInitialConfiguration"
+    Option "PrimaryGPU" "yes"
+    ModulePath "/usr/lib/nvidia/xorg"
+    ModulePath "/usr/lib/xorg/modules"
+EndSection
 
 # Generic drivers
 broadcom-wl libinput
