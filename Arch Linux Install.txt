@@ -107,7 +107,7 @@ EndSection
 broadcom-wl libinput
 
 # Fonts
-noto-fonts ttf-font-awesome
+noto-fonts ttf-font-awesome ttf-roboto-mono ttf-hack
 
 # Audio
 pulseaudio pulseaudio-alsa pavucontrol 
