@@ -78,8 +78,39 @@ grub-mkconfig -o /boot/grub/grub.cfg (should mention windows boot manager)
 exit
 shutdown now ; or reboot
 
-sudo pacman -S pulseaudio pulseaudio-alsa pavucontrol xorg xorg-xinit noto-fonts i3 termite *gpudriver*
-echo "exec i3" > ~/.xinitrc
+
+# Necessary packages
+
+# X server
+xorg xorg-xinit
+
+# GPU drivers
+#
+# Open Source NVIDIA
+xf86-video-nouveau
+#
+# Proprietary NVIDIA
+nvidia lib32-nvidia-utils (for steam)
+
+# Fonts
+noto-fonts
+
+# Audio
+pulseaudio pulseaudio-alsa pavucontrol 
+
+# Window manager
+bspwm 
+
+# Terminal Emulator
+alacritty
+
+# Browser
+firefox
+
+# Useful programs
+nm-applet trash-cli
+
+echo "exec bspwm" > ~/.xinitrc
 startx
 
 setxkbmap -model abnt2 -layout hu
