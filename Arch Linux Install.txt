@@ -125,7 +125,7 @@ alacritty
 firefox
 
 # Useful programs
-nm-applet trash-cli acpilight htop pulsemixer imagemagick
+nm-applet trash-cli acpilight htop pulsemixer imagemagick maim
 
 # Showoff programs
 vis lolcat sl neofetch
