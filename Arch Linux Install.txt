@@ -13,7 +13,7 @@ mkdir /mnt/boot (Only for UEFI)
 mount /dev/sda1 /mnt/boot (Only for UEFI) (mount the efi partition)
 pacman -Syyy reflector
 reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
-pacstrap /mnt base base-devel linux linux-firmware vi vim networkmanager man-db man-pages gvfs inetutils netctl e2fsprogs dosfstools intel-ucode
+pacstrap /mnt base base-devel linux linux-firmware vim networkmanager man-db man-pages gvfs inetutils netctl e2fsprogs dosfstools intel-ucode
 genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
 ln -sf /usr/share/zoneinfo/Europe/Bucharest /etc/localtime
