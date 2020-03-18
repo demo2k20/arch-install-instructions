@@ -113,13 +113,16 @@ EndSection
 broadcom-wl libinput
 
 # Fonts
-noto-fonts
+noto-fonts ttf-font-awesome
 
 # Audio
 pulseaudio pulseaudio-alsa pavucontrol 
 
 # Window manager
 bspwm 
+
+# Bar
+polybar-git
 
 # Terminal Emulator
 alacritty
@@ -134,7 +137,7 @@ nm-applet trash-cli acpilight htop pulsemixer
 vis lolcat sl neofetch
 
 # Regular programs
-qbittorrent ranger zathura zathura-pdf-poppler feh rofi i3lock compton lxappearance arandr file-roller 
+qbittorrent-dark-git ranger zathura zathura-pdf-poppler feh rofi i3lock compton lxappearance arandr file-roller vlc
 
 echo "exec bspwm" > ~/.xinitrc
 startx
