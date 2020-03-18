@@ -35,7 +35,7 @@ useradd -mG wheel,users,audio,video,optical,storage,power *username*
 passwd *username*
 visudo (uncomment %wheel) :wq
 
-# installing the bootloader (Legacy)!!!!!!!!!!!!
+# installing the bootloader GRUB (Legacy)!!!!!!!!!!!!
 pacman -S grub
 grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -64,7 +64,7 @@ title   Arch Linux
 linux   /vmlinuz-linux
 initrd    /intel-ucode.img
 initrd    /initramfs-linux.img
-options   root=LABEL=arch_os rw
+options   root=LABEL=arch_os rw (nvidia proprietary driver screen tearing fix: "nvidia-drm.modeset=1")
 
 Alternatively, use UUID; in vim: options  root=UUID=*r! blkid of /dev/sda3* rw
 
