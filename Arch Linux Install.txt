@@ -124,11 +124,15 @@ alacritty
 # Browser
 firefox
 
+# Shell
+zsh zsh-theme-powerlevel9k
+
+
 # Useful programs
 nm-applet trash-cli acpilight htop pulsemixer imagemagick maim
 
 # Showoff programs
-vis lolcat sl neofetch
+vis lolcat sl neofetch cmatrix tree figlet
 
 # Regular programs
 qbittorrent-dark-git ranger python-ueberzug-git zathura zathura-pdf-poppler feh rofi i3lock compton lxappearance arandr file-roller vlc
