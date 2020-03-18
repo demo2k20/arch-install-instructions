@@ -131,7 +131,7 @@ nm-applet trash-cli acpilight htop pulsemixer imagemagick maim
 vis lolcat sl neofetch
 
 # Regular programs
-qbittorrent-dark-git ranger zathura zathura-pdf-poppler feh rofi i3lock compton lxappearance arandr file-roller vlc
+qbittorrent-dark-git ranger python-ueberzug-git zathura zathura-pdf-poppler feh rofi i3lock compton lxappearance arandr file-roller vlc
 
 echo "exec bspwm" > ~/.xinitrc
 startx
