@@ -1,46 +1,75 @@
+# Set keyboard layout
 loadkeys hu
-(wifi-menu; if needed)
+
+# Set up networking
+wifi-menu ; if needed
 ping google.com
+ 
+# Update the system clock
 timedatectl set-ntp true
 timedatectl status
-cfdisk (UEFI: GPT; Legacy: DOS; 512MB Efi System (UEFI ONLY); 150% of ramGB for swap, restGB Linux Filesystem)
+
+# Partition the disk
+cfdisk (UEFI: GPT; Legacy: DOS; 512MB Efi System (UEFI ONLY); restGB Linux Filesystem; 150% of ramGB for swap)
+
+# Format the partitions
 mkfs.vfat /dev/sda1 (Only for UEFI)
-mkswap /dev/sda2
-swapon /dev/sda2
-mkfs.ext4 /dev/sda3
-mount /dev/sda3 /mnt
+mkfs.ext4 /dev/sda2
+mkswap /dev/sda3
+swapon /dev/sda3
+mount /dev/sda2 /mnt
 mkdir /mnt/boot (Only for UEFI)
 mount /dev/sda1 /mnt/boot (Only for UEFI) (mount the efi partition)
+
+# Update the mirror list
 pacman -Syyy reflector
 reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
+
+# Install the base system
 pacstrap /mnt base base-devel linux linux-firmware vim networkmanager man-db man-pages gvfs inetutils netctl e2fsprogs dosfstools intel-ucode
+
+# Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
+
+# Change root into the installed system
 arch-chroot /mnt
+
+# Link a timezone to the system
 ln -sf /usr/share/zoneinfo/Europe/Bucharest /etc/localtime
 hwclock --systohc
+
+# Setup the locale
 vim /etc/locale.gen (uncomment en_US.UTF-8 UTF-8)
 locale-gen
+
+# Set the langauge
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
+
+# Set the tty keyboard layout
 echo "KEYMAP=hu" > /etc/vconsole.conf
+
+# Set the system's hostname
 echo "*myhostname*" > /etc/hostname
 vim /etc/hosts
 127.0.0.1	localhost
 ::1		localhost
 127.0.1.1	*myhostname*.localdomain	*myhostname*
 
+# Enable NetworkManager
 systemctl enable NetworkManager
 
+# Setup root and user accounts
 passwd (to setup root password)
 useradd -mG wheel,users,audio,video,optical,storage,power *username*
 passwd *username*
 visudo (uncomment %wheel) :wq
 
-# installing the bootloader GRUB (Legacy)!!!!!!!!!!!!
+# Install GRUB bootleader (Legacy)
 pacman -S grub
 grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 
-# installing the bootloader GRUB (UEFI)!!!!!!!!!!!!!!
+# Install GRUB bootloader (UEFI)
 pacman -S grub efibootmgr
 mkdir /boot/efi
 mount /dev/sda1 /boot/efi
@@ -50,7 +79,7 @@ mkdir /boot/efi/EFI/BOOT
 cp /boot/efi/EFI/GRUB/grubx64.efi /boot/efi/EFI/BOOT/BOOTX64.EFI
 vim /boot/efi/startup.nsh (Write: bcf boot add 1 fs0:\EFI\GRUB\grubx64.efi "GRUB" *NEWLINE* exit)
 
-# installing the bootloader systemd boot (UEFI)!!!!!!!!!!!
+# Install systemd bootloader (UEFI)
 bootctl --path=/boot install
 
 vim /boot/loader/loader.conf
@@ -68,7 +97,7 @@ options   root=LABEL=arch_os rw (nvidia proprietary driver screen tearing fix: "
 
 Alternatively, use UUID; in vim: options  root=UUID=*r! blkid of /dev/sda3* rw
 
-
+# Exit chroot and reboot into system
 exit
 shutdown now ; or reboot
 
@@ -113,7 +142,7 @@ noto-fonts ttf-font-awesome ttf-roboto-mono ttf-hack
 pulseaudio pulseaudio-alsa pavucontrol 
 
 # Window manager
-bspwm 
+bspwm sxhkd
 
 # Bar
 polybar-git
@@ -129,10 +158,10 @@ zsh zsh-theme-powerlevel9k
 
 
 # Useful programs
-nm-applet trash-cli acpilight htop pulsemixer imagemagick maim
+network-manager-applet trash-cli acpilight htop pulsemixer imagemagick maim mlocate
 
 # Showoff programs
-vis lolcat sl neofetch cmatrix tree figlet
+cli-visualizer lolcat sl neofetch cmatrix tree figlet toilet
 
 # Regular programs
 qbittorrent-dark-git ranger python-ueberzug-git zathura zathura-pdf-poppler feh rofi i3lock compton lxappearance arandr file-roller vlc
