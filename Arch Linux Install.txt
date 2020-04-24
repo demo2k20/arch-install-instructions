@@ -22,11 +22,11 @@ mkdir /mnt/boot (Only for UEFI)
 mount /dev/sda1 /mnt/boot (Only for UEFI) (mount the efi partition)
 
 # Update the mirror list
-pacman -Syyy reflector
+pacman -Sy reflector
 reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
 
 # Install the base system
-pacstrap /mnt base base-devel linux linux-firmware vim networkmanager man-db man-pages gvfs inetutils netctl e2fsprogs dosfstools intel-ucode
+pacstrap /mnt base base-devel linux linux-firmware neovim networkmanager man-db man-pages e2fsprogs intel-ucode
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -136,7 +136,7 @@ EndSection
 broadcom-wl libinput
 
 # Fonts
-noto-fonts ttf-font-awesome ttf-roboto-mono ttf-hack
+noto-fonts ttf-font-awesome ttf-roboto-mono
 
 # Audio
 pulseaudio pulseaudio-alsa pavucontrol 
@@ -148,23 +148,22 @@ bspwm sxhkd
 polybar-git
 
 # Terminal Emulator
-alacritty
+termite
 
 # Browser
 firefox
 
 # Shell
-zsh zsh-theme-powerlevel9k
-
+zsh
 
 # Useful programs
-network-manager-applet trash-cli acpilight htop pulsemixer imagemagick maim mlocate
+network-manager-applet trash-cli acpilight htop pulsemixer imagemagick maim mlocate gvfs
 
 # Showoff programs
 cli-visualizer lolcat sl neofetch cmatrix tree figlet toilet
 
 # Regular programs
-qbittorrent-dark-git ranger python-ueberzug-git zathura zathura-pdf-poppler feh rofi i3lock compton lxappearance arandr file-roller vlc
+qbittorrent-dark-git ranger python-ueberzug-git zathura zathura-pdf-poppler feh rofi i3lock compton lxappearance arandr file-roller mpv
 
 echo "exec bspwm" > ~/.xinitrc
 startx
@@ -173,4 +172,4 @@ setxkbmap -model abnt2 -layout hu
 localectl set-x11-keymap hu
 localectl status
 
-github.com/rolandnemes/dotfiles
+github.com/demo2k20/dotfiles
