@@ -2,7 +2,7 @@
 loadkeys hu
 
 # Set up networking
-wifi-menu ; if needed
+wifi-menu
 ping google.com
  
 # Update the system clock
@@ -13,20 +13,20 @@ timedatectl status
 cfdisk (UEFI: GPT; Legacy: DOS; 512MB Efi System (UEFI ONLY); restGB Linux Filesystem; 150% of ramGB for swap)
 
 # Format the partitions
-mkfs.vfat /dev/sda1 (Only for UEFI)
-mkfs.ext4 /dev/sda2
-mkswap /dev/sda3
-swapon /dev/sda3
-mount /dev/sda2 /mnt
-mkdir /mnt/boot (Only for UEFI)
-mount /dev/sda1 /mnt/boot (Only for UEFI) (mount the efi partition)
+mkfs.vfat /dev/sdx1 # Only for UEFI
+mkfs.ext4 /dev/sdx2
+mkswap /dev/sdx3
+swapon /dev/sdx3
+mount /dev/sdx2 /mnt
+mkdir /mnt/boot # Only for UEFI
+mount /dev/sdx1 /mnt/boot # Only for UEFI (mount the EFI partition)
 
 # Update the mirror list
 pacman -Sy reflector
 reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
 
 # Install the base system
-pacstrap /mnt base base-devel linux linux-firmware neovim networkmanager man-db man-pages e2fsprogs intel-ucode
+pacstrap /mnt base base-devel linux linux-firmware intel-ucode neovim networkmanager
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -38,8 +38,8 @@ arch-chroot /mnt
 ln -sf /usr/share/zoneinfo/Europe/Bucharest /etc/localtime
 hwclock --systohc
 
-# Setup the locale
-vim /etc/locale.gen (uncomment en_US.UTF-8 UTF-8)
+# Set the locale
+vim /etc/locale.gen # Uncomment "en_US.UTF-8 UTF-8"
 locale-gen
 
 # Set the langauge
@@ -49,7 +49,7 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "KEYMAP=hu" > /etc/vconsole.conf
 
 # Set the system's hostname
-echo "*myhostname*" > /etc/hostname
+echo "hostname" > /etc/hostname
 vim /etc/hosts
 127.0.0.1	localhost
 ::1		localhost
@@ -59,47 +59,29 @@ vim /etc/hosts
 systemctl enable NetworkManager
 
 # Setup root and user accounts
-passwd (to setup root password)
-useradd -mG wheel,users,audio,video,optical,storage,power *username*
-passwd *username*
-visudo (uncomment %wheel) :wq
+passwd # Create the root account's password
+useradd -mG wheel,users,audio,video,optical,storage,power username # Change username to the actual username
+passwd username # Create the regular user's password
+EDITOR=nvim visudo # Uncomment %wheel to give the user sudo privileges
 
-# Install GRUB bootleader (Legacy)
+# Install GRUB bootleader in Legacy
 pacman -S grub
-grub-install /dev/sda
+grub-install /dev/sdx
 grub-mkconfig -o /boot/grub/grub.cfg
 
-# Install GRUB bootloader (UEFI)
+# Install GRUB bootloader in UEFI
 pacman -S grub efibootmgr
 mkdir /boot/efi
-mount /dev/sda1 /boot/efi
-grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
+mount /dev/sdx1 /boot/efi
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 mkdir /boot/efi/EFI/BOOT
 cp /boot/efi/EFI/GRUB/grubx64.efi /boot/efi/EFI/BOOT/BOOTX64.EFI
-vim /boot/efi/startup.nsh (Write: bcf boot add 1 fs0:\EFI\GRUB\grubx64.efi "GRUB" *NEWLINE* exit)
-
-# Install systemd bootloader (UEFI)
-bootctl --path=/boot install
-
-vim /boot/loader/loader.conf
-default arch-*
-#timeout 5
-
-e2label /dev/sda3 "arch_os"
-
-vim /boot/loader/entries/arch.conf
-title   Arch Linux
-linux   /vmlinuz-linux
-initrd    /intel-ucode.img
-initrd    /initramfs-linux.img
-options   root=LABEL=arch_os rw (nvidia proprietary driver screen tearing fix: "nvidia-drm.modeset=1")
-
-Alternatively, use UUID; in vim: options  root=UUID=*r! blkid of /dev/sda3* rw
+nvim /boot/efi/startup.nsh # Write: bcf boot add 1 fs0:\EFI\GRUB\grubx64.efi "GRUB" *NEWLINE* exit
 
 # Exit chroot and reboot into system
 exit
-shutdown now ; or reboot
+shutdown now # Remove USB drive at this point
 
 
 # Necessary packages
