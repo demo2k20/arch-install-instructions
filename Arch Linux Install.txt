@@ -60,7 +60,7 @@ systemctl enable NetworkManager
 
 # Setup root and user accounts
 passwd # Create the root account's password
-useradd -mG wheel,users,audio,video,optical,storage,power username # Change username to the actual username
+useradd -mG wheel,users,audio,video,optical,storage,power,rfkill username # Change username to the actual username
 passwd username # Create the regular user's password
 EDITOR=nvim visudo # Uncomment %wheel to give the user sudo privileges
 
